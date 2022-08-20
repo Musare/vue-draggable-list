@@ -1,0 +1,44 @@
+{
+  "name": "vue-draggable-list",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && vue-tsc --emitDeclarationOnly",
+    "build:demo": "vite build --config vite.config.demo.ts && vue-tsc --emitDeclarationOnly --project tsconfig.demo.json",
+    "preview": "vite preview",
+    "lint": "eslint lib src types --ext .js,.ts,.vue",
+    "lint:fix": "eslint lib src types --ext .js,.ts,.vue --fix"
+  },
+  "types": "./dist/lib/main.d.ts",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vue-draggable-list.umd.cjs",
+  "module": "./dist/vue-draggable-list.js",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-draggable-list.js",
+      "require": "./dist/vue-draggable-list.umd.cjs"
+    }
+  },
+  "dependencies": {
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "@vitejs/plugin-vue": "^3.0.3",
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.3.0",
+    "mobile-drag-drop": "^3.0.0-beta.0",
+    "prettier": "2.7.1",
+    "terser": "^5.14.2",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.7",
+    "vue-eslint-parser": "^9.0.3",
+    "vue-tsc": "^0.40.1"
+  }
+}
