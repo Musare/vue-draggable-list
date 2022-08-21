@@ -249,9 +249,11 @@ window.addEventListener("touchmove", () => {});
     ></div>
 </template>
 
-<style scoped>
+<style lang="css">
 @import "mobile-drag-drop/default.css";
+</style>
 
+<style lang="css">
 .draggable-item[draggable="true"] {
     cursor: move;
 }

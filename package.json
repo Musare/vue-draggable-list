@@ -33,7 +33,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.3.0",
-    "mobile-drag-drop": "^3.0.0-beta.0",
+    "mobile-drag-drop": "^2.3.0-rc.2",
     "prettier": "2.7.1",
     "terser": "^5.14.2",
     "typescript": "^4.6.4",
