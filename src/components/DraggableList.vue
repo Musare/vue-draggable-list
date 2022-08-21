@@ -186,6 +186,8 @@ const hasSlotContent = (slot: SlotType | undefined, slotProps = {}) => {
         if (Array.isArray(vnode.children) && !vnode.children.length)
             return false;
 
+        if (vnode.children === "") return false;
+
         return (
             vnode.type !== Text ||
             vnode.type.toString() !== "Symbol(Text)" ||
