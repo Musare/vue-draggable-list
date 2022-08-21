@@ -1,7 +1,27 @@
 {
   "name": "vue-draggable-list",
-  "version": "1.0.0",
+  "description": "vue draggable list",
+  "version": "0.1.0",
   "type": "module",
+  "license": "GPL-3.0",
+  "author": {
+    "name": "Musare",
+    "url": "https://github.com/Musare",
+    "email": "core@musare.com"
+  },
+  "contributors": [
+    "Kristian Vos <k.vos@kvos.dev>",
+    "Owen Diffey <owen@diffey.dev>"
+  ],
+  "homepage": "https://github.com/Musare/vue-draggable-list",
+  "bugs": {
+    "url": "https://github.com/Musare/vue-draggable-list/issues",
+    "email": "core@musare.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Musare/vue-draggable-list.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build && vue-tsc --emitDeclarationOnly",

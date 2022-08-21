@@ -6,7 +6,6 @@ const props = defineProps({
     list: { type: Array as PropType<any[]>, default: () => [] },
     attributes: { type: Object, default: () => ({}) },
     tag: { type: String, default: "div" },
-    class: { type: String, default: "" },
     group: { type: String, default: "" },
     disabled: { type: [Boolean, Function], default: false }
 });
