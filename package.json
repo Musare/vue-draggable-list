@@ -20,12 +20,14 @@
     ".": {
       "import": "./dist/vue-draggable-list.js",
       "require": "./dist/vue-draggable-list.umd.cjs"
-    }
+    },
+    "./dist/style.css": "./dist/style.css"
   },
   "dependencies": {
     "vue": "^3.2.37"
   },
   "devDependencies": {
+    "@types/node": "^18.7.8",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "@vitejs/plugin-vue": "^3.0.3",

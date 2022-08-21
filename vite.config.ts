@@ -1,3 +1,4 @@
+import path from "path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
@@ -7,7 +8,7 @@ export default defineConfig({
         target: "esnext",
         minify: "terser",
         lib: {
-            entry: "./lib/main.ts",
+            entry: path.resolve(__dirname, "lib/main.ts"),
             name: "vue-draggable-list",
             // the proper extensions will be added
             fileName: "vue-draggable-list"
