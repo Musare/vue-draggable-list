@@ -1,25 +1,48 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+<script lang="ts" setup>
+import { reactive } from "vue";
+import DraggableList from "./components/DraggableList.vue";
+
+const testArray = reactive([
+    {
+        id: 1,
+        name: "Bob"
+    },
+    {
+        id: 2,
+        name: "Alice"
+    },
+    {
+        id: 3,
+        name: "Lisa"
+    }
+]);
+
+const onStart = (...args) => {
+    console.log("On start", args);
+};
+
+const onEnd = (...args) => {
+    console.log("On end", args);
+};
+
+const onUpdate = (...args) => {
+    console.log("On update", args);
+};
 </script>
 
 <template>
-    <div>
-        <a href="https://vitejs.dev" target="_blank">Vite</a>
-        <a href="https://vuejs.org/" target="_blank">Vue</a>
-    </div>
+    <h1>Example</h1>
+    <DraggableList
+        item-key="id"
+        v-model:list="testArray"
+        @start="onStart"
+        @end="onEnd"
+        @update="onUpdate"
+    >
+        <template #item="{ element }">
+            <h2>{{ element.id }} - {{ element.name }}</h2>
+        </template>
+    </DraggableList>
 </template>
 
-<style scoped>
-.logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-}
-.logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<style scoped></style>
