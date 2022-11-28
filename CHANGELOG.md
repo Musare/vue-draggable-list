@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.2] - 2022-11-28
+
+### Fixes
+
+-   fix: Dropping items outside of another item wouldn't trigger an update
+
 ## [v0.1.1] - 2022-08-21
 
 ### Fixes

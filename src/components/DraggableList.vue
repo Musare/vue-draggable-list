@@ -145,9 +145,7 @@ const onDragOver = (itemIndex: number, event: DragEvent, push = false) => {
 const onDragEnd = () => {
     // Emits the end event to parent component, indicating that dragging has ended
     emit("end");
-};
-// Gets called when an element is dropped on another element
-const onDrop = () => {
+
     // Emits the update event to parent component, indicating that the order is now done and ordering/moving is done
     if (!window.draggingItem) return;
     const { itemIndex, itemListUuid, initialItemIndex, initialItemListUuid } =
@@ -163,6 +161,9 @@ const onDrop = () => {
     else emit("update", {});
     delete window.draggingItem;
 };
+
+// Gets called when an element is dropped on another element, currently not used
+const onDrop = () => {};
 
 // Function that gets called for each item and returns attributes
 const convertAttributes = (item: any) =>
