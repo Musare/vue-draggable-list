@@ -30,7 +30,7 @@ const data = ref([] as any[]);
 
 const touching = ref(false);
 const touchDragging = ref(false);
-const touchingTimeout = ref<null|number>(null);
+const touchingTimeout = ref<null | number>(null);
 
 watch(
     () => props.list,
