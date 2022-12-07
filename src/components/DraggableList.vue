@@ -7,7 +7,8 @@ const props = defineProps({
     attributes: { type: Object, default: () => ({}) },
     tag: { type: String, default: "div" },
     group: { type: String, default: "" },
-    disabled: { type: [Boolean, Function], default: false }
+    disabled: { type: [Boolean, Function], default: false },
+    touchTimeout: { type: Number, default: 250 }
 });
 
 const listUuid = ref(
@@ -26,6 +27,10 @@ const listUuid = ref(
 );
 const mounted = ref(false);
 const data = ref([] as any[]);
+
+const touching = ref(false);
+const touchDragging = ref(false);
+const touchingTimeout = ref<null|number>(null);
 
 watch(
     () => props.list,
@@ -55,7 +60,12 @@ const itemOnMove = (index: number) => {
 const onDragStart = (itemIndex: number, event: DragEvent) => {
     const { draggable } = event.target as HTMLElement;
 
-    if (props.disabled === true || !draggable || !event.dataTransfer) {
+    if (
+        props.disabled === true ||
+        !draggable ||
+        !event.dataTransfer ||
+        (touching.value && !touchDragging.value)
+    ) {
         event.preventDefault();
         return;
     }
@@ -196,6 +206,25 @@ const hasSlotContent = (slot: SlotType | undefined, slotProps = {}) => {
         );
     });
 };
+
+const onTouchStart = () => {
+    touching.value = true;
+    touchDragging.value = false;
+
+    if (touchingTimeout.value) clearTimeout(touchingTimeout.value);
+
+    touchingTimeout.value = setTimeout(() => {
+        touchDragging.value = true;
+    }, props.touchTimeout);
+};
+
+const onTouchEnd = () => {
+    touching.value = false;
+    touchDragging.value = false;
+
+    if (touchingTimeout.value) clearTimeout(touchingTimeout.value);
+    touchingTimeout.value = null;
+};
 </script>
 
 <script lang="ts">
@@ -230,11 +259,13 @@ window.addEventListener("touchmove", () => {});
             :draggable="
                 typeof disabled === 'function' ? !disabled(item) : !disabled
             "
+            @touchstart.passive="onTouchStart()"
+            @touchend="onTouchEnd()"
             @dragstart="onDragStart(itemIndex, $event)"
             @dragenter.prevent
             @dragover.prevent="onDragOver(itemIndex, $event)"
             @dragend="onDragEnd()"
-            @drop.prevent="onDrop()"
+            @drop="onDrop()"
             :data-index="itemIndex"
             :data-list="listUuid"
             class="draggable-item"

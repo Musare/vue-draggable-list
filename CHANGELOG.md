@@ -1,5 +1,11 @@
 # Changelog
 
+## Next
+
+### Changes
+
+- Support mobile better by adding a timeout a user has to hold an element before they can start dragging
+
 ## [v0.1.2] - 2022-11-28
 
 ### Fixes
