@@ -68,13 +68,13 @@ button:focus-visible {
   flex-direction: row;
 }
 
-.card > .handle {
+.card > .draggable-handle {
   display: flex;
   align-items: center;
   border: 1px dotted white;
 }
 
-.card > *:not(.handle) {
+.card > *:not(.draggable-handle) {
   flex: 1;
 }
 

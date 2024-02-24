@@ -9,7 +9,7 @@ const props = defineProps({
     group: { type: String, default: "" },
     disabled: { type: [Boolean, Function], default: false },
     touchTimeout: { type: Number, default: 250 },
-    handleClass: { type: String }
+    handleClass: { type: String, required: false, default: null }
 });
 
 const listUuid = ref(
@@ -28,6 +28,7 @@ const listUuid = ref(
 );
 const mounted = ref(false);
 const data = ref([] as any[]);
+const isDraggable = ref(props.handleClass ? false : true);
 
 const touching = ref(false);
 const touchDragging = ref(false);
@@ -47,6 +48,35 @@ onMounted(() => {
 
 const emit = defineEmits(["update:list", "start", "end", "update"]);
 
+const hasHandleAtPosition = (event: MouseEvent | DragEvent) => {
+    const { x, y } = event;
+    const elementsAtPosition = document.elementsFromPoint(x, y);
+    return elementsAtPosition.reduce<boolean | null>(
+        (clickedHandle, elementAtPosition) => {
+            // If we already have a boolean result, return that
+            if (typeof clickedHandle === "boolean") return clickedHandle;
+            // If the clicked element (or one of its parents) has the handle class, we clicked the handle
+            if (elementAtPosition.classList.contains(props.handleClass!))
+                return true;
+            // If we've reached the draggable element itself, we found no handle, so return false to avoid
+            // accidentally using handles with the same class outside the draggable element
+            if (elementAtPosition === event.target) return false;
+            return null;
+        },
+        null
+    );
+};
+
+const onMouseDown = (itemIndex: number, event: MouseEvent) => {
+    if (!props.handleClass) return;
+
+    isDraggable.value = !!hasHandleAtPosition(event);
+};
+
+const onMouseUp = (itemIndex: number, event: MouseEvent) => {
+    if (props.handleClass) isDraggable.value = false;
+};
+
 const itemOnMove = (index: number) => {
     // Deletes the remove function for the dragging element
     if (window.draggingItem && window.draggingItem.itemOnMove)
@@ -63,6 +93,8 @@ const onDragStart = (itemIndex: number, event: DragEvent) => {
 
     if (
         props.disabled === true ||
+        (typeof props.disabled === "function" &&
+            props.disabled(data.value[itemIndex])) ||
         !draggable ||
         !event.dataTransfer ||
         (touching.value && !touchDragging.value)
@@ -73,27 +105,9 @@ const onDragStart = (itemIndex: number, event: DragEvent) => {
 
     // If we only want to start dragging if the user clicked on a handle element
     if (props.handleClass) {
-        const { x, y } = event;
-        // Gets all elements at a specific x, y position on the page
-        const elementsAtPosition = document.elementsFromPoint(x, y);
-        const clickedHandle = elementsAtPosition.reduce<boolean | null>((clickedHandle, elementAtPosition) => {
-            // If we already have a boolean result, return that
-            if (typeof clickedHandle === "boolean") return clickedHandle;
-            // If the clicked element (or one of its parents) has the handle class, we clicked the handle
-            if (elementAtPosition.classList.contains(props.handleClass!)) return true;
-            // If we've reached the draggable element itself, we found no handle, so return false to avoid
-            // accidentally using handles with the same class outside the draggable element
-            if (elementAtPosition === event.target) return false;
-            return null;
-        }, null);
-
         // If no handle was clicked, we don't want to start dragging the element
-        if (!clickedHandle) {
-            event.preventDefault();
-            return;
-        }
+        if (!hasHandleAtPosition(event)) return;
     }
-
 
     // Set the effect of moving an element, which by default is clone. Not being used right now
     event.dataTransfer.dropEffect = "move";
@@ -180,6 +194,8 @@ const onDragOver = (itemIndex: number, event: DragEvent, push = false) => {
 const onDragEnd = () => {
     // Emits the end event to parent component, indicating that dragging has ended
     emit("end");
+
+    if (props.handleClass) isDraggable.value = false;
 
     // Emits the update event to parent component, indicating that the order is now done and ordering/moving is done
     if (!window.draggingItem) return;
@@ -282,8 +298,12 @@ window.addEventListener("touchmove", () => {});
             v-if="hasSlotContent($slots.item, { element: item })"
             :is="tag"
             :draggable="
-                typeof disabled === 'function' ? !disabled(item) : !disabled
+                (typeof disabled === 'function'
+                    ? !disabled(item)
+                    : !disabled) && isDraggable
             "
+            @mousedown="onMouseDown(itemIndex, $event)"
+            @mouseup="onMouseUp(itemIndex, $event)"
             @touchstart.passive="onTouchStart()"
             @touchend="onTouchEnd()"
             @dragstart="onDragStart(itemIndex, $event)"
@@ -315,6 +335,9 @@ window.addEventListener("touchmove", () => {});
 }
 .draggable-item:not(:last-of-type) {
     margin-bottom: 10px;
+}
+.draggable-item .draggable-handle {
+    cursor: move;
 }
 .empty-list-placeholder {
     flex: 1;

@@ -69,11 +69,11 @@ const onUpdate = (...args) => {
         @start="onStart"
         @end="onEnd"
         @update="onUpdate"
-        handle-class="handle"
+        handle-class="draggable-handle"
     >
         <template #item="{ element }">
             <div class="card">
-                <div class="handle">
+                <div class="draggable-handle">
                     <span>Handle</span>
                 </div>
                 <p>{{ element.id }} - {{ element.name }}</p>
