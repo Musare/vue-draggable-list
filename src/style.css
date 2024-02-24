@@ -37,6 +37,11 @@ h1 {
   line-height: 1.1;
 }
 
+h2 {
+  font-size: 2em;
+  line-height: 1.1;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -57,7 +62,20 @@ button:focus-visible {
 }
 
 .card {
-  padding: 2em;
+  padding: 0.25em;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: row;
+}
+
+.card > .handle {
+  display: flex;
+  align-items: center;
+  border: 1px dotted white;
+}
+
+.card > *:not(.handle) {
+  flex: 1;
 }
 
 #app {

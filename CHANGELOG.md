@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.4] - T.B.D.
+
+### Changes
+
+- Add option to only allow dragging when you click a handle element
+
 ## [v0.1.3] - 2022-12-07
 
 ### Changes

@@ -8,7 +8,8 @@ const props = defineProps({
     tag: { type: String, default: "div" },
     group: { type: String, default: "" },
     disabled: { type: [Boolean, Function], default: false },
-    touchTimeout: { type: Number, default: 250 }
+    touchTimeout: { type: Number, default: 250 },
+    handleClass: { type: String }
 });
 
 const listUuid = ref(
@@ -69,6 +70,30 @@ const onDragStart = (itemIndex: number, event: DragEvent) => {
         event.preventDefault();
         return;
     }
+
+    // If we only want to start dragging if the user clicked on a handle element
+    if (props.handleClass) {
+        const { x, y } = event;
+        // Gets all elements at a specific x, y position on the page
+        const elementsAtPosition = document.elementsFromPoint(x, y);
+        const clickedHandle = elementsAtPosition.reduce<boolean | null>((clickedHandle, elementAtPosition) => {
+            // If we already have a boolean result, return that
+            if (typeof clickedHandle === "boolean") return clickedHandle;
+            // If the clicked element (or one of its parents) has the handle class, we clicked the handle
+            if (elementAtPosition.classList.contains(props.handleClass!)) return true;
+            // If we've reached the draggable element itself, we found no handle, so return false to avoid
+            // accidentally using handles with the same class outside the draggable element
+            if (elementAtPosition === event.target) return false;
+            return null;
+        }, null);
+
+        // If no handle was clicked, we don't want to start dragging the element
+        if (!clickedHandle) {
+            event.preventDefault();
+            return;
+        }
+    }
+
 
     // Set the effect of moving an element, which by default is clone. Not being used right now
     event.dataTransfer.dropEffect = "move";

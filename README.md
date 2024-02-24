@@ -68,6 +68,7 @@ Originally created for [Musare](https://github.com/Musare/Musare).
 | group | String | | Yes | Name of the group, so you can move items between different lists in the same group. Leaving it empty will disable moving between lists. |
 | disabled | Boolean or Function | `false` | Yes | Used to disable dragging inside a list in general, or with a function you can prevent specific items from being dragged. |
 | touchTimeout | Number | 250 | Yes | Time in milliseconds that a user is required to hold list item before dragging is started. |
+| handleClass | String | N/A | Yes | Class of handle elements. For example: "handle". If specified, only elements with this class can be used to start dragging. |
 
 ### Emits
 
