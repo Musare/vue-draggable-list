@@ -6,6 +6,10 @@
 
 - Add option to only allow dragging when you click a handle element
 
+### Fixes
+
+- fix: Update emitted when order has not changed
+
 ## [v0.1.3] - 2022-12-07
 
 ### Changes

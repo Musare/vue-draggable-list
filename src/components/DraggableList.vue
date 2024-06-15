@@ -202,7 +202,9 @@ const onDragEnd = () => {
     if (!window.draggingItem) return;
     const { itemIndex, itemListUuid, initialItemIndex, initialItemListUuid } =
         window.draggingItem;
-    if (itemListUuid === initialItemListUuid)
+    if (itemListUuid === initialItemListUuid) {
+        if (initialItemIndex === itemIndex) return;
+
         emit("update", {
             moved: {
                 oldIndex: initialItemIndex,
@@ -210,7 +212,7 @@ const onDragEnd = () => {
                 updatedList: data.value
             }
         });
-    else emit("update", {});
+    } else emit("update", {});
     delete window.draggingItem;
 };
 
