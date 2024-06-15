@@ -49,13 +49,12 @@ onMounted(() => {
 const emit = defineEmits(["update:list", "start", "end", "update"]);
 
 const hasHandleAtPosition = (event: MouseEvent | DragEvent) => {
-    let { clientX: x, clientY: y } = event;
+    const { clientX: x, clientY: y } = event;
     const elementsAtPosition = document.elementsFromPoint(x, y);
     return elementsAtPosition.reduce<boolean | null>(
         (clickedHandle, elementAtPosition) => {
             // If we already have a boolean result, return that
-            if (typeof clickedHandle === "boolean")
-                return clickedHandle;
+            if (typeof clickedHandle === "boolean") return clickedHandle;
             // If the clicked element (or one of its parents) has the handle class, we clicked the handle
             if (elementAtPosition.classList.contains(props.handleClass!))
                 return true;
@@ -108,8 +107,7 @@ const onDragStart = (itemIndex: number, event: DragEvent) => {
     // If we only want to start dragging if the user clicked on a handle element
     if (props.handleClass) {
         // If no handle was clicked, we don't want to start dragging the element
-        if (!hasHandleAtPosition(event))
-            return;
+        if (!hasHandleAtPosition(event)) return;
     }
 
     // Set the effect of moving an element, which by default is clone. Not being used right now
@@ -258,7 +256,10 @@ const onTouchStart = (event: TouchEvent) => {
     // When we use handles, we need to find the element that is the handle, up until the draggable-item element itself
     if (props.handleClass) {
         let handleElement = event.target as HTMLElement | null;
-        while (handleElement && !handleElement.classList.contains(props.handleClass)) {
+        while (
+            handleElement &&
+            !handleElement.classList.contains(props.handleClass)
+        ) {
             if (handleElement.classList.contains("draggable-item")) {
                 handleElement = null;
                 break;
@@ -266,8 +267,7 @@ const onTouchStart = (event: TouchEvent) => {
             handleElement = handleElement.parentElement;
         }
         // If the user is touching the handle, set isDraggable to true so dragging is allowed to start in onDragStart
-        if (handleElement)
-            isDraggable.value = true;
+        if (handleElement) isDraggable.value = true;
     }
 
     if (touchingTimeout.value) clearTimeout(touchingTimeout.value);
@@ -281,11 +281,9 @@ const onTouchEnd = () => {
     touching.value = false;
     touchDragging.value = false;
     // When we use handles, isDragging should default to false, so the user has to start dragging the handle for isDragging to be changed to true
-    if (props.handleClass)
-        isDraggable.value = false;
+    if (props.handleClass) isDraggable.value = false;
 
-    if (touchingTimeout.value)
-        clearTimeout(touchingTimeout.value);
+    if (touchingTimeout.value) clearTimeout(touchingTimeout.value);
     touchingTimeout.value = null;
 };
 </script>
